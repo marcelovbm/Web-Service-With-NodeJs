@@ -7,7 +7,9 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+
 var api = require('./routes/api');
+var preprocess = require('./bin/preprocess');
 
 var app = express();
 
@@ -25,7 +27,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/listUsers', api);
+app.use('/api', api);
+
+app.get('/preprocess', preprocess.get);
+app.post('/preprocess', preprocess.post);
+app.put('/preprocess', preprocess.put);
+app.delete('/preprocess', preprocess.delete);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -44,5 +51,7 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+
 
 module.exports = app;
